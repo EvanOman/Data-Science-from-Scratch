@@ -2,6 +2,8 @@
 
 from collections import Counter
 import random
+
+import Ch5
 from Ch4 import *
 from Ch5 import *
 from Ch6 import *
@@ -13,16 +15,20 @@ isMain = __name__ == "__main__"
 
 # One Dimensional Exploratory Analysis
 
+
 def toFName(title):
     return title.replace(" ", "") + ".pdf"
+
 
 def bucketize(point, bucket_size):
     """floor the point to the next lower multiple of bucket_size"""
     return bucket_size * math.floor(point / bucket_size)
 
+
 def make_histogram(points, bucket_size):
     """buckets the points and counts how many in each bucket"""
     return Counter(bucketize(point, bucket_size) for point in points)
+
 
 def plot_histogram(points, bucket_size, title=""):
     plt.figure()
@@ -88,8 +94,44 @@ def correlation_matrix(data):
         is the correlation between columns i and j of the input data
     """
     _, num_columns = shape(data)
-    
+
     def matrix_entry(i, j):
         return Ch5.correlation(Ch4.get_col(data, i), correlation(Ch4.get_col(data, j)))
-    
+
     return make_matrix(num_columns, num_columns, matrix_entry)
+
+
+def makeScatterPlotMatrix(data):
+    _, num_columns = shape(data)
+    fig, ax = plt.subplots(num_columns, num_columns)
+
+    for i in range(num_columns):
+        for j in range(num_columns):
+            # scatter column_j on the x axis vs column_i on the y axis
+            if i != j:
+                ax[i][j].scatter(get_col(data, j), get_col(data, i))
+            else:
+                ax[i][j].annotate("series " + str(i), (.5, .5),
+                                  xycoords='axes fraction', ha="center", va="center")
+
+            # Then hide the axis labels except left and bottom charts
+            if i < num_columns -1:
+                ax[i][j].xaxis.set_visible(False)
+            if j > 0:
+                ax[i][j].yaxis.set_visible(False)
+
+    # Fix the bottom right and top left axis labels, which are wrong because
+    # their charts only have text in them
+    ax[-1][-1].set_xlim(ax[0][-1].get_xlim())
+    ax[0][0].set_xlim(ax[0][1].get_ylim())
+    plt.show()
+
+
+if isMain:
+
+    # Make my own data
+    def myMatrixEntry(i, j): random_normal()
+
+    data = make_matrix(300, 3, myMatrixEntry)
+    makeScatterPlotMatrix(data)
+
