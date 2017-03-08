@@ -75,6 +75,22 @@ if __name__ == "__main__":
     # Then we say that we reject the null hypothesis because we should be 95% 
     # confident that the mean should lie within the range (469, 531)
     
+    # Here we want to check what happens when p = .55
+    
+    # 95% bounds based on assumption that p = .5
+    lo, hi = normal_two_sided_bounds(.95, mu_0, sigma_0)
+    
+    # actual mu and sigma based on p = .55
+    mu_1, sigma_1 = normal_approximation_to_binomial(1000, .55)
+    
+    # a type 2 error means we fail to reject the null hypothesis
+    # which will happen when X is still in our original interval
+    type_2_probability = normal_probability_between(lo, hi, mu_1, sigma_1)
+    power = 1 - type_2_probability
+    print("The power is %f" % power) # .887    
+    
+    
+    
     
     
     
