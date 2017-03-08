@@ -14,12 +14,12 @@ num_friends = [r.randint(1,100) for i in xrange(200)]
 friends_counts = Counter(num_friends)
 xs = range(101)
 ys = [friends_counts[x] for x in xs]
-# plt.bar(xs, ys)
-# plt.axis([0, 101, 0, 25])
-# plt.title("Histogram of Friend Counts")
-# plt.xlabel("# of friends")
-# plt.ylabel("# of people")
-# plt.show()
+plt.bar(xs, ys)
+plt.axis([0, 101, 0, 25])
+plt.title("Histogram of Friend Counts")
+plt.xlabel("# of friends")
+plt.ylabel("# of people")
+plt.show()
 
 num_points = len(num_friends)
 
