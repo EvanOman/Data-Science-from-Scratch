@@ -27,7 +27,8 @@ normal_probability_below = Ch6.normal_cdf
 # it is above the threshold if it isn't below the threshold
 def normal_probabilty_above(lo, mu=0, sigma=1):
     return 1 - Ch6.normal_cdf(lo, mu, sigma)
-    
+
+
 # it is in between if it is less than hi but not let than lo
 def normal_probability_between(lo, hi, mu=0, sigma=1):
     return Ch6.normal_cdf(hi, mu, sigma) - Ch6.normal_cdf(lo, mu, sigma)

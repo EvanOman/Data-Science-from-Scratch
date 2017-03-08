@@ -34,29 +34,29 @@ print((smallest_value, second_smallest_value))
 #### Central Tendencies ####
 
 def mean(x):
-	return sum(x)/len(x)
+    return sum(x)/len(x)
 
 print(mean(num_friends))
 
 def median(v):
-	n = len(v)
-	sorted_v = sorted(v)
-	midpoint = n // 2
+    n = len(v)
+    sorted_v = sorted(v)
+    midpoint = n // 2
 
-	if n % 2 :
-		return sorted_v[midpoint]
-	else:
-		# if the length is even, we need to average
-		lo = midpoint - 1
-		hi = midpoint
-		return (sorted_v[lo] + sorted_v[hi])/2
+    if n % 2 :
+        return sorted_v[midpoint]
+    else:
+        # if the length is even, we need to average
+        lo = midpoint - 1
+        hi = midpoint
+        return (sorted_v[lo] + sorted_v[hi])/2
 
 print("Median: "  + str(median(num_friends)))
 
 # Medians generalize well into quantiles:
 def quantile(x,p):
-	p_index = int(p * len(x))
-	return sorted(x)[p_index]
+    p_index = int(p * len(x))
+    return sorted(x)[p_index]
 
 print(quantile(num_friends, .10))
 print(quantile(num_friends, .25))
