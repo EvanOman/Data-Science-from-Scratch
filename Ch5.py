@@ -6,37 +6,42 @@ from collections import Counter
 import random as r
 import Ch4
 import math
+
+isMain = "__name__" == "__main__"
+
 # For reproducibility 
 r.seed(1248)
 
-# Data set:
-num_friends = [r.randint(1,100) for i in xrange(200)]
+if isMain:
+    # Data set:
+    num_friends = [r.randint(1,100) for i in range(200)]
+    
+    # Create a histogram for the data
+    friends_counts = Counter(num_friends)
+    xs = range(101)
+    ys = [friends_counts[x] for x in xs]
+    plt.bar(xs, ys)
+    plt.axis([0, 101, 0, 25])
+    plt.title("Histogram of Friend Counts")
+    plt.xlabel("# of friends")
+    plt.ylabel("# of people")
+    
+    num_points = len(num_friends)
+    
+    largest_value = max(num_friends)
+    smallest_value = min(num_friends)
+    
+    sorted_values = sorted(num_friends)
+    second_smallest_value = sorted_values[1]
+    print((smallest_value, second_smallest_value))
+#    print(mean(num_friends))
+    
 
-# Create a histogram for the data
-friends_counts = Counter(num_friends)
-xs = range(101)
-ys = [friends_counts[x] for x in xs]
-plt.bar(xs, ys)
-plt.axis([0, 101, 0, 25])
-plt.title("Histogram of Friend Counts")
-plt.xlabel("# of friends")
-plt.ylabel("# of people")
-
-num_points = len(num_friends)
-
-largest_value = max(num_friends)
-smallest_value = min(num_friends)
-
-sorted_values = sorted(num_friends)
-second_smallest_value = sorted_values[1]
-print((smallest_value, second_smallest_value))
 
 #### Central Tendencies ####
 
 def mean(x):
     return sum(x)/len(x)
-
-print(mean(num_friends))
 
 def median(v):
     n = len(v)
@@ -51,17 +56,17 @@ def median(v):
         hi = midpoint
         return (sorted_v[lo] + sorted_v[hi])/2
 
-print("Median: "  + str(median(num_friends)))
+#print("Median: "  + str(median(num_friends)))
 
 # Medians generalize well into quantiles:
 def quantile(x,p):
     p_index = int(p * len(x))
     return sorted(x)[p_index]
 
-print(quantile(num_friends, .10))
-print(quantile(num_friends, .25))
-print(quantile(num_friends, .75))
-print(quantile(num_friends, .90))
+#print(quantile(num_friends, .10))
+#print(quantile(num_friends, .25))
+#print(quantile(num_friends, .75))
+#print(quantile(num_friends, .90))
 
 # The mode is less commonly used but is still useful
 def mode(x):
