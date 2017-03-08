@@ -14,27 +14,28 @@ from collections import Counter
 def random_kid():
     return random.choice(["boy", "girl"])
     
-both_girls = 0
-older_girl = 0
-either_girl = 0
-
-random.seed(0)
-
-for _ in range(10000):
-    younger = random_kid()
-    older = random_kid()
+if __name__ == "__main__":
+    both_girls = 0
+    older_girl = 0
+    either_girl = 0
     
-    if older == "girl":
-        older_girl += 1
+    random.seed(0)
     
-    if older == "girl" and younger == "girl":
-        both_girls += 1
+    for _ in range(10000):
+        younger = random_kid()
+        older = random_kid()
         
-    if older == "girl" or younger == "girl":
-        either_girl += 1
+        if older == "girl":
+            older_girl += 1
         
-print "P(both | older) = %f" % (both_girls / older_girl) # .514 ~ 1/2
-print "P(both | either) = %f" % (both_girls / either_girl) # .341 ~ 1/3
+        if older == "girl" and younger == "girl":
+            both_girls += 1
+            
+        if older == "girl" or younger == "girl":
+            either_girl += 1
+            
+    print "P(both | older) = %f" % (both_girls / older_girl) # .514 ~ 1/2
+    print "P(both | either) = %f" % (both_girls / either_girl) # .341 ~ 1/3
 
 ### Normal Distribution ###
 
@@ -42,15 +43,16 @@ def normal_pdf(x, mu = 0, sigma = 1):
     sqrt_two_pi = math.sqrt(2*math.pi)
     return (math.exp(-(x-mu)**2/(2*sigma**2))/(sqrt_two_pi*sigma))
     
-xs = [x / 10.0 for x in range(-50,50)]
-plt.figure(1)
-plt.plot(xs, [normal_pdf(x, sigma=1) for x in xs], '-', label='mu=0,sigma=1')
-plt.plot(xs, [normal_pdf(x, sigma=2) for x in xs], '4--', label='mu=0,sigma=2')
-plt.plot(xs, [normal_pdf(x, sigma=.5) for x in xs], ':', label='mu=0, sigma=.5')
-plt.plot(xs, [normal_pdf(x, mu=-1) for x in xs], '-.', label='mu=-1,sigma=1')
-plt.legend()
-plt.title("Various normal pdfs")
-plt.show()
+if __name__ == "__main__":
+    xs = [x / 10.0 for x in range(-50,50)]
+    plt.figure(1)
+    plt.plot(xs, [normal_pdf(x, sigma=1) for x in xs], '-', label='mu=0,sigma=1')
+    plt.plot(xs, [normal_pdf(x, sigma=2) for x in xs], '4--', label='mu=0,sigma=2')
+    plt.plot(xs, [normal_pdf(x, sigma=.5) for x in xs], ':', label='mu=0, sigma=.5')
+    plt.plot(xs, [normal_pdf(x, mu=-1) for x in xs], '-.', label='mu=-1,sigma=1')
+    plt.legend()
+    plt.title("Various normal pdfs")
+    plt.show()
 
 # The normal CDF is not normally expressable in an "elementary" manner, we can 
 # use math.erf to compute though
@@ -58,16 +60,17 @@ plt.show()
 def normal_cdf(x, mu=0, sigma=1):
     return (1 + math.erf((x-mu)/(math.sqrt(2) * sigma)))/2
     
-xs = [x / 10.0 for x in range(-50,50)]
-plt.figure(2)
-plt.plot(xs, [normal_cdf(x, sigma=1) for x in xs], '-', label='mu=0,sigma=1')
-plt.plot(xs, [normal_cdf(x, sigma=2) for x in xs], '--', label='mu=0,sigma=2')
-plt.plot(xs, [normal_cdf(x, sigma=.5) for x in xs], ':', label='mu=0, sigma=.5')
-plt.plot(xs, [normal_cdf(x, mu=-1) for x in xs], '-.', label='mu=-1,sigma=1')
-plt.legend()
-plt.title("Various normal cdfs")
-plt.show()
-
+if __name__ == "__main__":
+    xs = [x / 10.0 for x in range(-50,50)]
+    plt.figure(2)
+    plt.plot(xs, [normal_cdf(x, sigma=1) for x in xs], '-', label='mu=0,sigma=1')
+    plt.plot(xs, [normal_cdf(x, sigma=2) for x in xs], '--', label='mu=0,sigma=2')
+    plt.plot(xs, [normal_cdf(x, sigma=.5) for x in xs], ':', label='mu=0, sigma=.5')
+    plt.plot(xs, [normal_cdf(x, mu=-1) for x in xs], '-.', label='mu=-1,sigma=1')
+    plt.legend()
+    plt.title("Various normal cdfs")
+    plt.show()
+    
 # Inverting the cdf algebraically is not nice, but since it is monotonically 
 # increasing, we can use binary search 
 def inverse_normal_cdf(p, mu=0, sigma=1, tolerance = .00001):
@@ -129,4 +132,5 @@ def make_hist(p, n, num_points):
     plt.title("Binomial Distribution vs. Normal Approximation")
     plt.show()
     
-make_hist(.75, 100, 10000)
+if __name__ == "__main__":
+    make_hist(.75, 100, 10000)
