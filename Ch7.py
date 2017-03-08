@@ -1,8 +1,9 @@
-# Chapter 7 Hypothesis and Inference
+# Chapter 7: Hypothesis and Inference
 
 from __future__ import division
 import Ch6
 import math
+import random
 
 # We want to check whether a given coin is fair. So we make our null hypothesis
 # that the coin is fair (p = .5) and the alternative hypothesis that the coin is
@@ -87,10 +88,56 @@ if __name__ == "__main__":
     # which will happen when X is still in our original interval
     type_2_probability = normal_probability_between(lo, hi, mu_1, sigma_1)
     power = 1 - type_2_probability
-    print("The power is %f" % power) # .887    
+    print("The power is %f" % power) # .887
     
+    # Suppose instead we assumed that the coin is not biassed against heads, 
+    # this is, p <= .5. Here we would use the one sided test:
+    hi = normal_upper_bound(.95, mu_0, sigma_0)
+    print("The upper limit is %f" % hi) # 526
     
+    type_2_probability = normal_probability_below(hi, mu_1, sigma_1)
+    power = 1 - type_2_probability
+    print("The power is %f" % power) #.936
     
+# Instead of specifying the bounds, we compute the probability, assuming that
+# H_0 is true, that the system exhibits the observed value
+def two_sided_p_value(x, mu=0, sigma=1):
+    # essentially we are figuring out which tail to compute and return the 
+    # double of
+    if x >= mu:
+        # if x is greater than the mean, the tail is what's greater than x
+        return 2 * normal_probabilty_above(x, mu, sigma)
+    else:
+        # if x is less than the mean, the tail is what's less than x
+        return 2 * normal_probability_below(x, mu, sigma)
+    
+if __name__ == "__main__":
+    # If we got 530 heads we would get:
+    print("The p-value is %f" % two_sided_p_value(529.5, mu_0, sigma_0)) # .062
+    
+    # NOTE: We use 529.5 instead of 530 because of the continuity correction
+    
+    # Empirical verification of the above p value
+    extreme_value_count = 0
+    for _ in range(100000):
+        num_heads = sum(1 if random.random() < .5 else 0 for _ in range(1000))
+    
+        if num_heads >= 530 or num_heads <= 470:
+            extreme_value_count += 1
+    
+    print("The percentage that were extreme was %f" % (extreme_value_count / 100000))
+    # .062
+    
+# Similarily we have:
+upper_p_value = normal_probabilty_above
+lower_p_value = normal_probability_below
+
+if __name__ == "__main__":
+    print("Upper: %f" % upper_p_value(524.5, mu_0, sigma_0)) # .061
+    print("Upper: %f" % upper_p_value(526.5, mu_0, sigma_0)) # .047
+    
+    # In the former case, we are above .05 so we fail to reject the null hyp.
+    # In the latter case, we are below .05 so we reject the null hypothesis
     
     
     
