@@ -1,0 +1,15 @@
+[merge]
+    tool = meld16
+[mergetool "meld17"]
+    # use this for Meld >=1.7
+    # see http://stackoverflow.com/a/22911793/859591
+    # second solution:
+    cmd = meld $LOCAL $MERGED $REMOTE
+    # first solution:
+    #cmd = meld $LOCAL $BASE $REMOTE --auto-merge
+[mergetool "meld16"]
+    cmd = meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $BASE $REMOTE --output $MERGED
+
+[include]
+    # requires git v1.7.10+
+    path = .gitconfig.local
